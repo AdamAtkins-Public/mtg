@@ -12,9 +12,9 @@ My beloved play group has an abundant supply of 6-sided die. We utilize this res
 The following steps complete the selection:
 
 - Let $n$ be the number of valid targets
-- Let $d_i$ be the value of pips rolled on the $i$th die
+- Let $d_i$ be the value of pips rolled on the $i$ th die
 
-1. Assign each of the *targets* a unique value $v \in \{0,1,\cdots,n-1\}$
+1. Assign each of the *targets* a unique value $v \in \\{0,1,\cdots,n-1\\}$
 2. Roll $n$ 6-sided dice
 3. Select the *target* that corresponds to the assigned value, $v$, such that:
 	
@@ -28,12 +28,11 @@ We use **mod** to create $v$ *bins*; we will expect there to be a unique *bin* f
 
 Simply stated, this function returns the value of the remainder for integer division.
 
-if $$ a = kb | k \in Z^* $$ then:
-$$ a \mod b = 0 $$
+if $$a = kb | k \in Z^*$$ then $$a \mod b = 0$$
 
 For example:
-- Let $ a = 7 $
-- Let $ b = 5 $
+- Let $a = 7$
+- Let $b = 5$
 
 $$ a \mod b \implies 7 \mod 5 = 2 $$ 
 
