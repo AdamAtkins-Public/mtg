@@ -1,9 +1,6 @@
 ﻿import matplotlib.pyplot as plt
 import argparse
 
-#bar plot (names,values) names = range(num_dice) values = sum(dice_roll_combination)
-#bar plot (names,values) names = range(num_dice-1) values = sum(dice_roll_combination) % num_dice
-
 def plot_dice_combinations(number_of_dice,max_die_value):
     """generates bar plots for number of dice with max die value sides
 
@@ -14,6 +11,8 @@ def plot_dice_combinations(number_of_dice,max_die_value):
 
     plot1: number of occurrences by sum of dice roll
     plot2: number of occurrences by sum of dice roll mod number of dice
+
+    returns dictionaries of values to be used in plot_table
     """
     dice_roll_sum = dict()
     dice_roll_mod = dict()
@@ -47,6 +46,26 @@ def plot_dice_combinations(number_of_dice,max_die_value):
     plt.ylabel('occurrences')
     plt.xlabel('sum of pips mod number of dice')
     plt.bar(dice_roll_mod.keys(),dice_roll_mod.values())
+    plt.show()
+
+    return dice_roll_sum, dice_roll_mod
+
+def plot_table(dice_rolls,number_of_dice,max_die_value,title):
+    """plots table of number of occurrences and probabilities for rolling values
+    """
+    column_labels = ['value','occurrences','probabilty']
+    roll_values = [roll for roll in dice_rolls.keys()]
+    cell_data = [[occurrences,
+                round((occurrences/(max_die_value**number_of_dice)),4)]
+                for occurrences in dice_rolls.values()]
+    zipped_list = list(zip(roll_values,cell_data))
+    row_data = [[entry[0],entry[1][0],entry[1][1]] for entry in zipped_list]
+    figure, axes = plt.subplots()
+    axes.table(cellText=row_data,
+              colLabels=column_labels,
+              loc='center')
+    axes.axis('off')
+    axes.set_title(title,loc='center')
     plt.show()
 
 
@@ -114,11 +133,14 @@ if __name__ == "__main__":
     #for n in range(max_die_value+1):
     #    print(n.__str__() + " " + factorials[n].__str__())
 
-    parser = argparse.ArgumentParser(description='Generates a bar plots of distribution of sums and mod values for n k-sided dice')
+    parser = argparse.ArgumentParser(description='Generates bar plots of distribution of sums and mod values for n k-sided dice')
     parser.add_argument('n',type=int,nargs='?',default=2,
                         help='number of dice to be rolled')
     parser.add_argument('k',type=int,nargs='?',default=6,
                         help='max value on dice (assuming min value is 1)')
 
     args = parser.parse_args()
-    plot_dice_combinations(args.n,args.k)
+    dice_roll_sum, dice_roll_mod = plot_dice_combinations(args.n,args.k)
+    plot_table(dice_roll_sum,args.n,args.k,"sum value probabilities")
+    plot_table(dice_roll_mod,args.n,args.k,"mod value probabilities")
+ 
