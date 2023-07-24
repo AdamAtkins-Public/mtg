@@ -1,5 +1,6 @@
 ﻿import matplotlib.pyplot as plt
 import argparse
+from tabulate import tabulate
 
 def plot_dice_combinations(number_of_dice,max_die_value):
     """generates bar plots for number of dice with max die value sides
@@ -56,18 +57,11 @@ def plot_table(dice_rolls,number_of_dice,max_die_value,title):
     column_labels = ['value','occurrences','probabilty']
     roll_values = [roll for roll in dice_rolls.keys()]
     cell_data = [[occurrences,
-                round((occurrences/(max_die_value**number_of_dice)),4)]
+                round((occurrences/(max_die_value**number_of_dice)),max(number_of_dice,5))]
                 for occurrences in dice_rolls.values()]
     zipped_list = list(zip(roll_values,cell_data))
     row_data = [[entry[0],entry[1][0],entry[1][1]] for entry in zipped_list]
-    figure, axes = plt.subplots()
-    axes.table(cellText=row_data,
-              colLabels=column_labels,
-              loc='center')
-    axes.axis('off')
-    axes.set_title(title,loc='center')
-    plt.show()
-
+    print(title + ":\n\n" + tabulate(row_data,headers=column_labels)+"\n")
 
 def next_combination_of_dice(combination,max_die_value):
     """returns the next combination of dice values according to invariant
